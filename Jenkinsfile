@@ -10,14 +10,14 @@ pipeline {
             steps {
                 sh '''
                 terraform init
-                terraform plan --var-file=terraform.tfvars
+                terraform plan 
                 '''
             }
 
         }        
         stage ('terraform apply in gcp') {
             steps {
-                sh 'terraform apply -var-file=terraform.tfvars -auto-approve'
+                sh 'terraform apply -auto-approve'
             }
         } 
     }
