@@ -6,7 +6,7 @@ provider "google" {
 }
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "terraform-instance"
+  name         = "satya-instance"
   machine_type = "f1-micro"
 
   boot_disk {
@@ -24,6 +24,6 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name                    = "terraform-network"
+  name                    = "satya-network"
   auto_create_subnetworks = "true"
 }
