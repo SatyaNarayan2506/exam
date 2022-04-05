@@ -17,7 +17,7 @@ pipeline {
         }        
         stage ('terraform apply in gcp') {
             steps {
-                sh 'terraform destroy -auto-approve'
+                sh 'terraform apply -auto-approve'
             }
         } 
     }
