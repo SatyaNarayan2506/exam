@@ -27,3 +27,21 @@ resource "google_compute_network" "vpc_network" {
   name                    = "satya-network"
   auto_create_subnetworks = "true"
 }
+// VPC firewall configuration
+resource "google_compute_firewall" "demo-firewall" {
+  name    = "${var.firewall-name}"
+  network = "${google_compute_network.vpc_network.name}"
+
+  allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "8080", "1000-2000"]
+    
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
