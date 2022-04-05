@@ -2,6 +2,7 @@ provider "google" {
   project = "cellular-cider-339905"
   region  = "us-central1"
   zone    = "us-central1-c"
+  credentials = "satya.json"
 }
 
 resource "google_compute_instance" "vm_instance" {
