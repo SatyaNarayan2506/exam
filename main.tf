@@ -1,35 +1,22 @@
+// Configure the Google Cloud provider
 provider "google" {
-  project = "cellular-cider-339905"
-  region  = "us-central1"
-  zone    = "us-central1-c"
-  credentials = "satya.json"
+ credentials = "${file("${var.credentials}")}"
+ project     = "${var.gcp_project}"
+ region      = "${var.region}"
+ zone        = "${var.zone}"
 }
-
-resource "google_compute_instance" "vm_instance" {
-  name         = "satya-instance"
-  machine_type = "f1-micro"
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-2004-focal-v20220331"
-    }
-  }
-
-  network_interface {
-    # A default network is created for all GCP projects
-    network = google_compute_network.vpc_network.self_link
-    access_config {
-    }
-  }
-}
-
 resource "google_compute_network" "vpc_network" {
-  name                    = "satya-network"
-  auto_create_subnetworks = "true"
+name = "${var.vpc-name}"
+}
+resource "google_compute_subnetwork" "public-subnetwork" {
+name = "${var.subnet-name}"
+ip_cidr_range = "${var.ip_cidr_range}"
+region = "${var.region}"
+network = google_compute_network.vpc_network.name
 }
 // VPC firewall configuration
 resource "google_compute_firewall" "demo-firewall" {
-  name    = "satya_firewall"
+  name    = "${var.firewall-name}"
   network = "${google_compute_network.vpc_network.name}"
 
   allow {
@@ -45,3 +32,32 @@ resource "google_compute_firewall" "demo-firewall" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_instance" "vm-instance2" {
+  name         = "${var.instance_name}"
+  machine_type = "${var.machine_type}"
+  zone         = "${var.zone}"
+
+  tags = ["foo", "bar"]
+
+  boot_disk {
+    initialize_params {
+      image = "${var.image}"
+    }
+  }
+
+
+  network_interface {
+    network = "${var.network}"
+
+    access_config {
+      // Ephemeral public IP
+    }
+  }
+
+  metadata = {
+    foo = "bar"
+  }
+  metadata_startup_script = "${file("./setup.sh")}"
+
+ 
+}
