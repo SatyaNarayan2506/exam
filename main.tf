@@ -29,7 +29,7 @@ resource "google_compute_network" "vpc_network" {
 }
 // VPC firewall configuration
 resource "google_compute_firewall" "demo-firewall" {
-  name    = "${var.firewall-name}"
+  name    = "satya_firewall"
   network = "${google_compute_network.vpc_network.name}"
 
   allow {
