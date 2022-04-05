@@ -1,35 +1,28 @@
 provider "google" {
- credentials = "${var.credentials}"
- project     = "${var.gcp_project}"
- region      = "${var.region}"
-}
-// Create VPC
-resource "google_compute_network" "vpc" {
- name                    = "${var.name}-vpc"
- auto_create_subnetworks = "false"
+  project = "cellular-cider-339905"
+  region  = "us-central1"
+  zone    = "us-central1-c"
 }
 
-// Create Subnet
-resource "google_compute_subnetwork" "subnet" {
- name          = "${var.name}-subnet"
- ip_cidr_range = "${var.subnet_cidr}"
- network       = "${var.name}-vpc"
- depends_on    = ["google_compute_network.vpc"]
- region      = "${var.region}"
-}
-// VPC firewall configuration
-resource "google_compute_firewall" "firewall" {
-  name    = "${var.name}-firewall"
-  network = "${google_compute_network.vpc.name}"
+resource "google_compute_instance" "vm_instance" {
+  name         = "terraform-instance"
+  machine_type = "f1-micro"
 
-  allow {
-    protocol = "icmp"
+  boot_disk {
+    initialize_params {
+      image = "ubuntu-2004-focal-v20220331"
+    }
   }
 
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
+  network_interface {
+    # A default network is created for all GCP projects
+    network = google_compute_network.vpc_network.self_link
+    access_config {
+    }
   }
+}
 
-  source_ranges = ["0.0.0.0/0"]
+resource "google_compute_network" "vpc_network" {
+  name                    = "terraform-network"
+  auto_create_subnetworks = "true"
 }
