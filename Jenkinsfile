@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('git clone') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/subham258/terraformsubham.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SatyaNarayan2506/exam.git']]])
             }
         }
         stage ('terafform init') {
