@@ -1,5 +1,5 @@
 region          = "us-central1"
-gcp_project     = "cellular-cider-339905"
+gcp_project     = "sattu-346411"
 credentials     = "satya.json"
 vpc-name        = "suprobhatjoy"
 subnet-name     = "suprbhatjoy-sub"
