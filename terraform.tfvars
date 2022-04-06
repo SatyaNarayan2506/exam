@@ -1,6 +1,6 @@
 region          = "us-central1"
 gcp_project     = "sattu-346411"
-credentials     = "satya.json"
+credentials     = "sattu.json"
 vpc-name        = "suprobhatjoy"
 subnet-name     = "suprbhatjoy-sub"
 range_name      = "joy"
