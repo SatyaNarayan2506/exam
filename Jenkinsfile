@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('Git checkout'){
             steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'joy-git', url: 'https://github.com/SatyaNarayan2506/exam.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/SatyaNarayan2506/exam.git']]])
             }
         }
         stage('Inite'){
@@ -18,9 +18,8 @@ pipeline{
         }
         stage('Apply'){
             steps{
-                sh 'terraform destroy -var-file=terraform.tfvars -auto-approve'
                 sh 'terraform apply -var-file=terraform.tfvars -auto-approve'
-              //  sh 'terraform destroy -var-file=terraform.tfvars -auto-approve'
+                //sh 'terraform destroy -var-file=terraform.tfvars -auto-approve'
             }
         }
         
