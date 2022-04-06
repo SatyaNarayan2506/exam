@@ -1,24 +1,27 @@
-pipeline {
-    agent any 
-    stages {
-        stage ('git clone') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SatyaNarayan2506/exam.git']]])
+pipeline{
+    agent any
+    stages{
+        stage('Git checkout'){
+            steps{
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'joy-git', url: 'https://github.com/SatyaNarayan2506/exam.git']]])
             }
         }
-        stage ('terafform init') {
-            steps {
-                sh '''
-                terraform init
-                terraform plan 
-                '''
+        stage('Inite'){
+            steps{
+                sh 'terraform init'
             }
-
-        }        
-        stage ('terraform apply in gcp') {
-            steps {
-                sh 'terraform destroy -auto-approve'
+        }
+        stage('Plan'){
+            steps{
+                sh 'terraform plan -var-file=terraform.tfvars'
             }
-        } 
+        }
+        stage('Apply'){
+            steps{
+                //sh 'terraform apply -var-file=terraform.tfvars -auto-approve'
+                sh 'terraform destroy -var-file=terraform.tfvars -auto-approve'
+            }
+        }
+        
     }
 }
